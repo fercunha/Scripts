@@ -9,14 +9,11 @@ hoje=$(date +%Y-%m-%d)
 ontem=$(date --date="yesterday" +"%Y%m%d")
 LISTA_BRAS="$1"
 
+echo "Acessando ${ACCT_LOG_DIR}/"
 cd $ACCT_LOG_DIR
 
 while read BRAS
 do
-	#printf "$BRAS"
-	#cd ${ACCESS_LOG_DIR}/${BRAS}
-	#pwd
-	echo "Acessando ${ACCT_LOG_DIR}/${BRAS}/"
 	echo "Lendo arquivo detail-${BRAS}-${ontem}.gz"
 	PACKET=$(gzip -d < ${ACCT_LOG_DIR}/detail-${BRAS}-${ontem}.gz | grep Acct-Status-Type | wc -l)
 	echo ${BRAS},${PACKET} | tee >> ./count_acct_${HOSTNAME}_${hoje}.csv	
