@@ -2,7 +2,9 @@
 
 set -e
 
-function log { logger -t "send_cdr_to_s3" -- $1; }
+function log {
+    logger -t "send_cdr_to_s3" -- $1;
+}
 
 function die {
     [ -n "$1" ] && log "$1"
