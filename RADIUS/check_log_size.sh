@@ -12,16 +12,33 @@ IP_BRAS=$2
 LOG_DIR_ACCESS=/var/log/freeradius/radaccess
 LOG_DIR_ACCT=/var/log/freeradius/radacct
 
-if [ $TYPE=auth ];
+if [ $TYPE = "auth" ];
 	then
-		cd $LOG_DIR_ACCESS
-		du -sc ${LOG_DIR_ACCESS}/${IP_BRAS}/access-request-${HOJE} | grep $IP_BRAS | grep $HOJE | cut -d/ -f1
-elif [ $TYPE=acct ];
+		if [ ! -e ${LOG_DIR_ACCESS}/${IP_BRAS}/access-request-${HOJE} ]
+			then
+
+			echo "0"
+
+		else
+			cd $LOG_DIR_ACCESS
+			du -sc ${LOG_DIR_ACCESS}/${IP_BRAS}/access-request-${HOJE} | grep $IP_BRAS | grep $HOJE | cut -d/ -f1
+
+		fi
+
+elif [ $TYPE = "acct" ];
 	then
+		if [ ! -e $LOG_DIR_ACCT/detail-$IP_BRAS-$HOJE ]
+			then
+
+			echo "0"
+
+		else
+
 		cd $LOG_DIR_ACCT
-		du -sc $LOG_DIR_ACCT | grep $IP_BRAS | grep $HOJE | cut -dd -f1
+		du -sc $LOG_DIR_ACCT/detail-$IP_BRAS-$HOJE| grep $IP_BRAS | grep $HOJE | cut -d/ -f1
+
+		fi
 else
 	echo "Erro"
 
 fi
-
